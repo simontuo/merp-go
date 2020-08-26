@@ -1,0 +1,115 @@
+version: "3.7"
+
+services:
+  mysql:
+    container_name: "mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_USER: 'root'
+      MYSQL_PASS: 'root'
+    image: "mysql:5.7.29"
+    volumes:
+      - "/Users/simontuo/Code/docker/merp/mysql/data:/var/lib/mysql"
+      - "/Users/simontuo/Code/docker/merp/mysql/conf/my.cnf:/etc/my.cnf"
+    ports:
+      - "3306:3306"
+    networks:
+      default:
+        ipv4_address: 172.20.0.2
+
+  redis:
+    image: "redis:latest"
+    container_name: "redis"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - "/Users/simontuo/Code/docker/merp/redis/data:/data"
+      - "/Users/simontuo/Code/docker/merp/redis/redis.conf:/etc/redis.conf"
+    ports:
+      - "6379:6379"
+    networks:
+      default:
+        ipv4_address: 172.20.0.3
+
+  etcd0:
+    image: "bitnami/etcd:latest"
+    container_name: etcd0
+    ports:
+      - "23800:2380"
+      - "23790:2379"
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_NAME=etcd0
+      - ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380
+      - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCD_ADVERTISE_CLIENT_URLS=http://192.168.3.7:23790
+      - ETCD_INITIAL_ADVERTISE_PEER_URLS=http://etcd0:2380
+      - ETCD_INITIAL_CLUSTER_TOKEN=etcd-cluster
+      - ETCD_INITIAL_CLUSTER=etcd0=http://etcd0:2380,etcd1=http://etcd1:2380,etcd2=http://etcd2:2380
+      - ETCD_INITIAL_CLUSTER_STATE=new
+    networks:
+      default:
+        ipv4_address: 172.20.0.4
+
+  etcd1:
+    image: "bitnami/etcd:latest"
+    container_name: etcd1
+    ports:
+      - "23801:2380"
+      - "23791:2379"
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_NAME=etcd1
+      - ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380
+      - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCD_ADVERTISE_CLIENT_URLS=http://192.168.3.7:23791
+      - ETCD_INITIAL_ADVERTISE_PEER_URLS=http://etcd1:2380
+      - ETCD_INITIAL_CLUSTER_TOKEN=etcd-cluster
+      - ETCD_INITIAL_CLUSTER=etcd0=http://etcd0:2380,etcd1=http://etcd1:2380,etcd2=http://etcd2:2380
+      - ETCD_INITIAL_CLUSTER_STATE=new
+    networks:
+      default:
+        ipv4_address: 172.20.0.5
+
+  etcd2:
+    image: "bitnami/etcd:latest"
+    container_name: etcd2
+    ports:
+      - "23802:2380"
+      - "23792:2379"
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_NAME=etcd2
+      - ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380
+      - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCD_ADVERTISE_CLIENT_URLS=http://192.168.3.7:23792
+      - ETCD_INITIAL_ADVERTISE_PEER_URLS=http://etcd2:2380
+      - ETCD_INITIAL_CLUSTER_TOKEN=etcd-cluster
+      - ETCD_INITIAL_CLUSTER=etcd0=http://etcd0:2380,etcd1=http://etcd1:2380,etcd2=http://etcd2:2380
+      - ETCD_INITIAL_CLUSTER_STATE=new
+    networks:
+      default:
+        ipv4_address: 172.20.0.6
+
+  ####jaeger链路追踪###
+  jaeger:
+    container_name: jaeger
+    image: jaegertracing/all-in-one:latest
+    environment:
+      - COLLECTOR_ZIPKIN_HTTP_PORT=9411
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+      - "16686:16686"
+      - "14268:14268"
+      - "9411:9411"
+    networks:
+      default:
+        ipv4_address: 172.20.0.7
+
+networks:
+  default:
+    external:
+      name: merp-go

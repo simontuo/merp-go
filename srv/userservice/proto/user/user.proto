@@ -1,0 +1,147 @@
+syntax="proto3";
+
+package srv.user;
+
+import "proto/pkg/protobuf/timestamp.proto";
+
+message User {
+    // @inject_tag: gorm:"primary_key"
+    int32 id=1;
+    // @inject_tag: gorm:"type:varchar(100);not null;comment:'名称'"
+    string name=2;
+    // @inject_tag: gorm:"type:varchar(100);not null;unique_index;comment:'手机'"
+    string phone=3;
+    // @inject_tag: gorm:"type:varchar(255);not null;comment:'密码'"
+    string password=4;
+    // @inject_tag: gorm:"type:varchar(100);comment:'邮箱'"
+    string email=5;
+    // @inject_tag: gorm:"type:tinyint(1);not null;default:1;comment:'启用'"
+    bool enable=6;
+    // @inject_tag: gorm:"type:datetime;default:null"
+    string created_at=7;
+    // @inject_tag: gorm:"type:datetime;default:null"
+    string updated_at=8;
+    // @inject_tag: gorm:"type:datetime;default:null"
+    string deleted_at=9;
+}
+
+message AdminUser {
+    // @inject_tag: gorm:"primary_key"
+    int32 id=1;
+    // @inject_tag: gorm:"type:int(11);comment:'用户id'"
+    int32 user_id=2;
+    // @inject_tag: gorm:"type:datetime;default:null"
+    string created_at=7;
+    // @inject_tag: gorm:"type:datetime;default:null"
+    string updated_at=8;
+}
+
+
+message GetUserInfoRequest {
+    int32 id=1;
+    string phone=2;
+}
+
+message GetUserResponse {
+    string status=1;
+    User data=2;
+}
+
+message VerifyUserRequest {
+    string phone=1;
+    string password=2;
+}
+
+message VerifyUserResponse {
+    string status=1;
+    bool pass=2;
+    int32 id=3;
+}
+
+message GetUserPageRequest {
+    // @inject_tag: form:"name"
+    string name=1;
+    // @inject_tag: form:"current_page"
+    int32 current_page=2;
+    // @inject_tag: form:"page_size"
+    int32 page_size=3;
+    // @inject_tag: form:"ids"
+    repeated int32 ids=4;
+}
+
+message GetUserPageResponse {
+    repeated User data=1;
+    int32 total=2;
+}
+
+message StoreUserRequest {
+     User form=1;
+}
+
+message StoreUserResponse {
+    User data=1;
+}
+
+message UpdateUserRequest {
+     User form=1;
+}
+
+message UpdateUserResponse {
+    User data=1;
+}
+
+message BatchBanUserRequest {
+    string type=1;
+    repeated int32 ids=2;
+}
+
+message BatchBanUserResponse {
+    string status=1;
+}
+
+message GetUserListRequest {
+    // @inject_tag: form:"name"
+    string name=1;
+}
+
+message GetUserListResponse {
+    repeated User data=1;
+}
+
+message GetAdminUserListRequest {
+    repeated int32 ids=1;
+}
+
+message GetAdminUserListResponse {
+    repeated AdminUser data=1;
+}
+
+message BindAdminRequest {
+    repeated int32 ids=1;
+}
+
+message BindAdminResponse {
+    string status=1;
+}
+
+message ResetPasswordRequest {
+    string phone=1;
+    string password=2;
+}
+
+message ResetPasswordResponse {
+    string status=1;
+}
+
+service UserService {
+    rpc GetUserInfo(GetUserInfoRequest) returns (GetUserResponse) {}
+    rpc VerifyUser(VerifyUserRequest) returns (VerifyUserResponse) {}
+    rpc GetUserPage(GetUserPageRequest) returns (GetUserPageResponse) {}
+    rpc StoreUser(StoreUserRequest) returns (StoreUserResponse) {}
+    rpc BatchBanUser(BatchBanUserRequest) returns (BatchBanUserResponse) {}
+    rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {}
+    rpc GetUserList(GetUserListRequest) returns (GetUserListResponse) {}
+    rpc BindAdmin(BindAdminRequest) returns (BindAdminResponse) {}
+    rpc GetAdminUserList(GetAdminUserListRequest) returns (GetAdminUserListResponse) {}
+    rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
+}

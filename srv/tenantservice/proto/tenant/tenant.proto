@@ -1,0 +1,82 @@
+syntax="proto3";
+
+package srv.tenant;
+
+message Tenant {
+    // @inject_tag: gorm:"primary_key"
+    int32 id=1;
+    // @inject_tag: gorm:"type:varchar(255);not null;comment:'名称'"
+    string name=2;
+    // @inject_tag: gorm:"type:varchar(100);not null;comment:'助记码'"
+    string mnemonic_code=3;
+    // @inject_tag: gorm:"type:varchar(100);not null;comment:'联系人'"
+    string contact=4;
+    // @inject_tag: gorm:"type:varchar(100);not null;comment:'联系人电话'"
+    string contact_phone=5;
+    // @inject_tag: gorm:"type:varchar(100);not null;comment:'联系地址'"
+    string contact_address=6;
+    // @inject_tag: gorm:"type:int(5);not null;comment:'规模'"
+    int32 size=7;
+    // @inject_tag: gorm:"type:int(11);not null;comment:'管理员'"
+    int32 administrator_id=8;
+    // @inject_tag: gorm:"type:tinyint(1);not null;default:1;comment:'启用'"
+    bool enable=9;
+    // @inject_tag: gorm:"type:date;default:null;comment:'合约开始时间'"
+    string contract_start=10;
+    // @inject_tag: gorm:"type:date;default:null;comment:'合约结束时间'"
+    string contract_end=11;
+    // @inject_tag: gorm:"type:datetime;default:null"
+    string created_at=12;
+    // @inject_tag: gorm:"type:datetime;default:null"
+    string updated_at=13;
+    // @inject_tag: gorm:"type:datetime;default:null"
+    string deleted_at=14;
+}
+
+message GetTenantPageRequest {
+    // @inject_tag: form:"name"
+    string name=1;
+    // @inject_tag: form:"current_page"
+    int32 current_page=2;
+    // @inject_tag: form:"page_size"
+    int32 page_size=3;
+}
+
+message GetTenantInfoRequest {
+    int32 id=1;
+}
+
+message GetTenantInfoResponse {
+    Tenant data=1;
+}
+
+message GetTenantPageResponse {
+    repeated Tenant data=1;
+    int32 total=2;
+}
+
+message StoreTenantRequest {
+    Tenant form=1;
+}
+
+message StoreTenantResponse {
+    Tenant data=1;
+}
+
+message UpdateTenantRequest {
+    Tenant form=1;
+}
+
+message UpdateTenantResponse {
+    Tenant data=1;
+}
+
+service TenantService {
+    rpc GetTenantInfo(GetTenantInfoRequest) returns (GetTenantInfoResponse) {}
+
+    rpc GetTenantPage(GetTenantPageRequest) returns (GetTenantPageResponse) {}
+
+    rpc StoreTenant(StoreTenantRequest) returns (StoreTenantResponse) {}
+
+    rpc UpdateTenant(UpdateTenantRequest) returns (UpdateTenantResponse) {}
+}

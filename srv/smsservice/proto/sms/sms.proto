@@ -1,0 +1,24 @@
+syntax="proto3";
+
+package srv.sms;
+
+message GetLoginVerifyCodeRequest {
+    string phone=1;
+}
+
+message GetLoginVerifyCodeResponse {
+    string status=1;
+}
+
+message GetForgetPasswordCodeRequest {
+    string phone=1;
+}
+
+message GetForgetPasswordCodeResponse {
+    string status=1;
+}
+
+service SmsService {
+    rpc GetLoginVerifyCode(GetLoginVerifyCodeRequest) returns (GetLoginVerifyCodeResponse) {}
+    rpc GetForgetPasswordCode(GetForgetPasswordCodeRequest) returns (GetForgetPasswordCodeResponse) {}
+}

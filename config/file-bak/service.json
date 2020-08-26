@@ -1,0 +1,37 @@
+{
+  "Web": {
+    "Admin": {
+      "Name": "go.micro.api.admin",
+      "PathPrefix": "/admin",
+      "Version": "v1",
+      "PassPath": [
+        "token", "test"
+      ]
+    },
+    "App": {
+      "Name": "go.micro.api.app",
+      "PathPrefix": "/app",
+      "Version": "v1",
+      "PassPath": [
+        "token"
+      ]
+    }
+  },
+  "Srv": {
+    "User": {
+      "Name": "go.micro.srv.user",
+      "Version": "v1",
+      "DBDatabase": "merp-user"
+    },
+    "Tenant": {
+      "Name": "go.micro.srv.tenant",
+      "Version": "v1",
+      "DBDatabase": "merp-tenant"
+    },
+    "Permission": {
+      "Name": "go.micro.srv.permission",
+      "Version": "v1",
+      "DBDatabase": "merp-permission"
+    }
+  }
+}

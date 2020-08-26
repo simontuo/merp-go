@@ -1,0 +1,109 @@
+syntax="proto3";
+
+package srv.permission;
+
+message Role {
+    // @inject_tag: gorm:"primary_key"
+    int32 id=1;
+    // @inject_tag: gorm:"type:varchar(100);not null;comment:'名称'"
+    string name=2;
+    // @inject_tag: gorm:"type:varchar(100);not null;comment:'标签'"
+    string label=3;
+    // @inject_tag: gorm:"type:varchar(255);not null;comment:'描述'"
+    string desc=4;
+    // @inject_tag: gorm:"type:tinyint(1);not null;default:1;comment:'启用'"
+    bool enable=5;
+    // @inject_tag: gorm:"type:datetime;default:null"
+    string created_at=6;
+    // @inject_tag: gorm:"type:datetime;default:null"
+    string updated_at=7;
+    // @inject_tag: gorm:"type:datetime;default:null"
+    string deleted_at=8;
+}
+
+message RoleInfo {
+    int32 id=1;
+    string name=2;
+    string label=3;
+    string desc=4;
+    bool enable=5;
+    repeated int32 user_ids=7;
+    repeated int32 permission_ids=6;
+}
+
+message GetRolePageRequest {
+    // @inject_tag: form:"name"
+    string name=1;
+    // @inject_tag: form:"current_page"
+    int32 current_page=2;
+    // @inject_tag: form:"page_size"
+    int32 page_size=3;
+}
+
+message GetRolePageResponse {
+    repeated Role data=1;
+    int32 total=2;
+}
+
+message StoreRoleRequest {
+    string name=1;
+    string label=2;
+    string desc=3;
+    repeated int32 permission_ids=4;
+}
+
+message StoreRoleResponse {
+    Role data=1;
+}
+
+message GetRoleInfoRequest {
+    int32 id=1;
+}
+
+message GetRoleInfoResponse {
+    RoleInfo data=1;
+}
+
+message UpdateRoleRequest {
+    int32 id=1;
+    string name=2;
+    string label=3;
+    string desc=4;
+    repeated int32 permission_ids=6;
+}
+
+message UpdateRoleResponse {
+    RoleInfo data=1;
+}
+
+message BindUserRequest {
+    int32 id=1;
+    repeated int32 user_ids=6;
+}
+
+message BindUserResponse {
+    string status=1;
+}
+
+message BatchBanRoleRequest {
+    string type=1;
+    repeated int32 ids=2;
+}
+
+message BatchBanRoleResponse {
+    string status=1;
+}
+
+service RoleService {
+    rpc GetRolePage(GetRolePageRequest) returns(GetRolePageResponse) {}
+
+    rpc StoreRole(StoreRoleRequest) returns(StoreRoleResponse) {}
+
+    rpc GetRoleInfo(GetRoleInfoRequest) returns(GetRoleInfoResponse) {}
+
+    rpc UpdateRole(UpdateRoleRequest) returns(UpdateRoleResponse) {}
+
+    rpc BindUser(BindUserRequest) returns(BindUserResponse) {}
+
+    rpc BatchBanRole(BatchBanRoleRequest) returns(BatchBanRoleResponse) {}
+}

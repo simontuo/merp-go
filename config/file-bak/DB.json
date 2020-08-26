@@ -1,0 +1,15 @@
+{
+  "DBHost": "172.20.0.2",
+  "DBPort": "3306",
+  "DBUser": "root",
+  "DBPassword": "root",
+  "DBDatabase": "",
+  "DBDebug": true,
+
+  "DevDBHost": "127.0.0.1",
+  "DevDBPort": "3306",
+  "DevDBUser": "root",
+  "DevDBPassword": "root",
+  "DevDBDatabase": "",
+  "DevDBDebug": true
+}

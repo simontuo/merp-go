@@ -1,0 +1,94 @@
+version: "3.7"
+
+services:
+  merp-go-gateway:
+    image: "merp-go-gateway:latest"
+    container_name: "merp-go-gateway"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - "/Users/simontuo/Code/gopath/src/github.com/simontuo/merp-go/config/file:/merp-go/config/file"
+    ports:
+      - "8080:8080"
+    command:
+      - /bin/bash
+      - -c
+      - |
+        cd /merp-go
+        ./gateway  --registry=etcd --registry_address=172.20.0.4:2379  api --handler=http
+    networks:
+      default:
+        ipv4_address: 172.20.0.10
+
+  merp-go-web-admin:
+    image: "merp-go-web-admin:latest"
+    container_name: "merp-go-web-admin"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - "/Users/simontuo/Code/gopath/src/github.com/simontuo/merp-go/config/file:/merp-go/config/file"
+    command:
+      - /bin/bash
+      - -c
+      - |
+        cd /merp-go
+        ./admin  --server_address=:7011
+    networks:
+      default:
+        ipv4_address: 172.20.0.11
+
+  merp-go-srv-user:
+    image: "merp-go-srv-user:latest"
+    container_name: "merp-go-srv-user"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - "/Users/simontuo/Code/gopath/src/github.com/simontuo/merp-go/config/file:/merp-go/config/file"
+    command:
+      - /bin/bash
+      - -c
+      - |
+        cd /merp-go
+        ./srv-user  --server_address=:7012
+    networks:
+      default:
+        ipv4_address: 172.20.0.12
+
+  merp-go-srv-tenant:
+    image: "merp-go-srv-tenant:latest"
+    container_name: "merp-go-srv-tenant"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - "/Users/simontuo/Code/gopath/src/github.com/simontuo/merp-go/config/file:/merp-go/config/file"
+    command:
+      - /bin/bash
+      - -c
+      - |
+        cd /merp-go
+        ./srv-tenant  --server_address=:7013
+    networks:
+      default:
+        ipv4_address: 172.20.0.13
+
+  merp-go-srv-permission:
+    image: "merp-go-srv-permission:latest"
+    container_name: "merp-go-srv-permission"
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - "/Users/simontuo/Code/gopath/src/github.com/simontuo/merp-go/config/file:/merp-go/config/file"
+    command:
+      - /bin/bash
+      - -c
+      - |
+        cd /merp-go
+        ./srv-permission  --server_address=:7014
+    networks:
+      default:
+        ipv4_address: 172.20.0.14
+
+networks:
+  default:
+    external:
+      name: merp-go

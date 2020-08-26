@@ -1,0 +1,12 @@
+.idea/
+build/*
+config/file
+docker-compose.yaml
+docker-compose-go.yaml
+gateway/build/*
+web/admin/build/*
+srv/userservice/build/*
+srv/tenantservice/build/*
+srv/permissionservice/build/*
+srv/smsservice/build/*
+srv/logservice/build/*

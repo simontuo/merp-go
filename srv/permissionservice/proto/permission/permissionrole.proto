@@ -1,0 +1,16 @@
+syntax="proto3";
+
+package srv.permission;
+
+message PermissionRole {
+    // @inject_tag: gorm:"primary_key"
+    int32 id=1;
+    // @inject_tag: gorm:"type:int(11);not null;comment:'权限id'"
+    int32 permission_id=2;
+    // @inject_tag: gorm:"type:int(11);not null;comment:'角色id'"
+    int32 role_id=3;
+    // @inject_tag: gorm:"type:datetime;default:null"
+    string created_at=4;
+    // @inject_tag: gorm:"type:datetime;default:null"
+    string updated_at=5;
+}

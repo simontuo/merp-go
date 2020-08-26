@@ -1,0 +1,10 @@
+{
+  "AppKey": "",
+  "AppSecret": "",
+  "Host": "",
+  "SignatureCommunication": "",
+  "SignatureName": "",
+  "SentSmsUri": "/sms/batchSendSms/v1",
+  "LoginTemplateId": "",
+  "ResetPasswordTemplateId": ""
+}

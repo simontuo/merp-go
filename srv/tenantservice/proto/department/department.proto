@@ -1,0 +1,81 @@
+syntax="proto3";
+
+package srv.tenant;
+
+message Department {
+    // @inject_tag: gorm:"primary_key"
+    int32 id=1;
+    // @inject_tag: gorm:"type:int(11);not null;comment:'父级id'"
+    int32 pid=2;
+    // @inject_tag: gorm:"type:varchar(100);not null;comment:'名称'"
+    string name=3;
+    // @inject_tag: gorm:"type:varchar(100);not null;comment:'助记码'"
+    string mnemonic_code=4;
+    // @inject_tag: gorm:"type:varchar(255);comment:'描述'"
+    string desc=5;
+    // @inject_tag: gorm:"type:int(11);not null;comment:'租户id'"
+    int32 tenant_id=6;
+    // @inject_tag: gorm:"type:tinyint(1);not null;default:1;comment:'启用'"
+    bool enable=7;
+    // @inject_tag: gorm:"type:datetime;default:null"
+    string created_at=8;
+    // @inject_tag: gorm:"type:datetime;default:null"
+    string updated_at=9;
+    // @inject_tag: gorm:"type:datetime;default:null"
+    string deleted_at=10;
+}
+
+message GetDepartmentTreeRequest {
+    int32 tenant_id=1;
+}
+
+message GetDepartmentTreeResponse {
+    repeated Department data=1;
+}
+
+message GetDepartmentInfoRequest {
+    int32 id=1;
+}
+
+message GetDepartmentInfoResponse {
+    Department data=1;
+}
+
+message StoreDepartmentRequest {
+    Department form=1;
+}
+
+message StoreDepartmentResponse {
+    Department data=1;
+}
+
+message UpdateDepartmentRequest {
+    Department form=1;
+}
+
+message UpdateDepartmentResponse {
+    Department data=1;
+}
+
+message BatchBanDepartmentRequest {
+    string type=1;
+    repeated int32 ids=2;
+}
+
+message BatchBanDepartmentResponse {
+    string status=1;
+}
+
+service DepartmentService {
+    rpc GetDepartmentTree(GetDepartmentTreeRequest) returns (GetDepartmentTreeResponse) {}
+
+    rpc GetDepartmentInfo(GetDepartmentInfoRequest) returns (GetDepartmentInfoResponse) {}
+
+    rpc StoreDepartment(StoreDepartmentRequest) returns (StoreDepartmentResponse) {}
+
+    rpc UpdateDepartment(UpdateDepartmentRequest) returns (UpdateDepartmentResponse) {}
+
+    rpc BatchBanDepartment(BatchBanDepartmentRequest) returns (BatchBanDepartmentResponse) {}
+}
+
+

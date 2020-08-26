@@ -1,0 +1,9 @@
+{
+  "Host": "127.0.0.1",
+  "Password": "",
+  "Port": "6379",
+
+  "DevHost": "127.0.0.1",
+  "DevPassword": "",
+  "DevPort": "6379"
+}
